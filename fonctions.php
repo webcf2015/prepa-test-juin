@@ -65,4 +65,9 @@ function chaine_hasard($nombre_caracteres){
     }
     return $sortie;
 }
-echo "<br/>".chaine_hasard(25);
+
+
+function traite_chaine($chaine){
+    $sortie = htmlentities(strip_tags(trim($chaine)),ENT_QUOTES);
+    return $sortie;
+}
