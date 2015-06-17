@@ -31,7 +31,10 @@ if(isset($_POST['letitre'])&&isset($_FILES['lefichier'])){
     // si on a pas d'erreur, on va insérer dans la db et créer la miniature et grande image   
     }else{
         var_dump($upload);
-
+        // création de la grande image qui garde les proportions
+        creation_img($dossier_ori, $upload['nom'],$upload['extension'],$dossier_gd,$grande_large,$grande_haute,$grande_qualite);
+        // création de la miniature centrée et coupée
+        creation_img($dossier_ori, $upload['nom'],$upload['extension'],$dossier_mini,$mini_large,$mini_haute,$mini_qualite,false);
     }    
 }
 
