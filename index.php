@@ -26,6 +26,7 @@ if (isset($_POST['lelogin'])) {
 
         $_SESSION = $recup_user; // transformation des résultats de la requête en variable de session
         $_SESSION['sid'] = session_id(); // récupération de la clef de session
+        $_SESSION['lelogin'] = $lelogin; // récupération du login (du POST après traitement)
         // var_dump($_SESSION);
         // redirection vers la page d'accueil (pour éviter les doubles connexions par F5)
         header('location: ' . CHEMIN_RACINE);
