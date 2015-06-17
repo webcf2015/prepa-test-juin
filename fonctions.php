@@ -5,7 +5,7 @@ require_once 'config.php';
 /*
  * 
  * Fonction d'upload de l'image d'origine, renvoie un tableau si réussie sinon renvoie une chaine de caractère contenant l'erreur
- * 
+ * Utilisation: upload_originales("$_FILE","url du dossier","tableau avec les extensions permises");
  *  
  */
 
@@ -37,7 +37,7 @@ function upload_originales($fichier,$destination,$ext){
     $sortie['nom'] = $nom_final;
     $sortie['extension'] = $extension_origine;
 
-    // on déplace l'image du dossier temporaire vers le dossier 'originales' (constante ORG) avec le nom de fichier complet
+    // on déplace l'image du dossier temporaire vers le dossier 'originales'  avec le nom de fichier complet
     if(@move_uploaded_file($fichier['tmp_name'], $destination.$nom_final)){
         return $sortie;
     // si erreur

@@ -8,10 +8,10 @@ define("DB_NAME", "prepatestjuin");
 // constant contenant la racine du site
 define("CHEMIN_RACINE", "http://localhost/php/prepa-test-juin/");
 
-// nom des dossiers de destination des images par rapport à la racine du site (chemin absolu)
-$dossier_ori = CHEMIN_RACINE."images/originales/"; // dossier de l'image originale
-$dossier_gd = CHEMIN_RACINE."images/affichees/"; // dossier de l'image pour affichage
-$dossier_mini = CHEMIN_RACINE."images/miniatures/"; // dossier des miniatures
+// nom des dossiers de destination des images (chemin relatif)
+$dossier_ori = "images/originales/"; // dossier de l'image originale
+$dossier_gd = "images/affichees/"; // dossier de l'image pour affichage
+$dossier_mini = "images/miniatures/"; // dossier des miniatures
 
 // taille des images d'affichage proportionnelle en pixels
 $grande_large = 850; // taille maximale en largeur
