@@ -171,59 +171,46 @@ function creation_img($chemin_org, $nom,$extension,$destination,$largeur_max,$ha
  * ON EST ICI
  * 
  */        
-        
+      //$chemin_org, $nom,$extension,$destination,$largeur_max,$hauteur_max,$qualite, $proportion = true  
         
     // REFAIRE LE CALCUL
     if($ratio_l>$ratio_h){
         
-        // si la largeur originale est plus petite que largeur maximale on va garder la taille d'origine en Largeur mais aussi en hauteur!
-        if($ratio_l < 1){
-            $largeur_dest = $largeur_org;
-            $hauteur_dest = $hauteur_org;
-        }else{
-            // on donne la largeur maximale comme référence
-            $largeur_dest = $largeur_max;
-            // on calcule la hauteur grâce au ratio de large
-            $hauteur_dest = round($hauteur_org/$ratio_l);
-        }
-        
-    // sinon (le ratio hauteur est plus grand ou égale au ratio largeur)   
-    }else{
-        // si la hauteur originale est plus petite que hauteur maximale on va garder la taille d'origine en hauteur mais aussi en largeur!
-        if($ratio_h < 1){
-            $largeur_dest = $largeur_org;
-            $hauteur_dest = $hauteur_org;
-        }else{
+
             // on calcule la largeur grâce au ratio de haut
             $largeur_dest = round($largeur_org/$ratio_h);
             // on donne la hauteur maximale comme référence
             $hauteur_dest = $hauteur_max;
+            $centre_large = round(($largeur_dest-$largeur_max)/2);
+            $centre_haut = 0;
+            
+        
+    // sinon (le ratio hauteur est plus grand ou égale au ratio largeur)   
+    }else{
+        // si la hauteur originale est plus petite que hauteur maximale on va garder la taille d'origine en hauteur mais aussi en largeur!
+ 
+            // on donne la largeur maximale comme référence
+            $largeur_dest = $largeur_max;
+            // on calcule la hauteur grâce au ratio de large
+            $hauteur_dest = round($hauteur_org/$ratio_l);
+            $centre_large = 0;
+            $centre_haut = round(($hauteur_dest-$hauteur_max)/2);
+            
         }
-    }    
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
+     
+     // création d'une image provisoire avant le crop
+    $img_temp = imagecreatetruecolor($largeur_dest, $hauteur_dest);    
+    // copie de l'image d'origine vers l'image finale
+   imagecopyresampled($img_temp, $image_finale, 0, 0, 0, 0, $largeur_dest, $hauteur_dest, $largeur_org, $hauteur_org);    
         
         
     
     // création d'une image vide aux dimensions fixes passées à la fonction
     $nouvelle_image = imagecreatetruecolor($largeur_max, $hauteur_max);    
     // copie de l'image d'origine vers l'image finale
-   imagecopyresampled($nouvelle_image, $image_finale, 0, 0, 0, 0, $largeur_dest, $hauteur_dest, $largeur_org, $hauteur_org);    
-        
-        
-        
+   imagecopyresampled($nouvelle_image, $img_temp, 0, 0, $centre_large, $centre_haut, $largeur_dest, $hauteur_dest, $largeur_dest, $hauteur_dest);    
+    // destruction de l'image temporaire pré-crop
+   imagedestroy($img_temp);
     }
     
     // création de l'image finale en .jpg dans le dossier de destination avec la qualité passée en paramètre
