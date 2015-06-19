@@ -67,6 +67,7 @@ $recup_sql = mysqli_query($mysqli,$sql) or die(mysqli_error($mysqli));
     <head>
         <meta charset="UTF-8">
         <title><?php echo $_SESSION['lelogin']?> - Votre Espace membre</title>
+        <link rel="stylesheet" href="style.css" />
     </head>
     <body>
          <div id="content">
@@ -104,7 +105,7 @@ $recup_sql = mysqli_query($mysqli,$sql) or die(mysqli_error($mysqli));
                  <div id="lesphotos">
                      <?php
                      while($ligne = mysqli_fetch_assoc($recup_sql)){
-                 echo "<div style='border:1px dotted black;margin: 5px;width: $mini_large px;display:inline-block;word-wrap:break-word;vertical-align:top;'>";
+                 echo "<div class='miniatures'>";
                  echo "<h4>".$ligne['letitre']."</h4>";
                  echo "<a href='".CHEMIN_RACINE.$dossier_gd.$ligne['lenom'].".".$ligne['letype']."' target='_blank'><img src='".CHEMIN_RACINE.$dossier_mini.$ligne['lenom'].".".$ligne['letype']."' alt='' /></a>";
                  echo "<p>".$ligne['ladesc']."<br />
