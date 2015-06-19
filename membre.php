@@ -53,7 +53,16 @@ if(isset($_POST['letitre'])&&isset($_FILES['lefichier'])){
     }    
 }
 
-
+// si on confirme la suppression
+if(isset($_GET['delete'])&& ctype_digit($_GET['delete'])){
+    $idphoto = $_GET['delete'];
+    $idutil = $_SESSION['id'];
+    
+    // récupération du nom de la photo
+    $sql1="SELECT lenom, letype FROM photo WHERE id=$idphoto;";
+    $nom_photo = mysqli_fetch_assoc(mysqli_query($mysqli,$sql1));
+    $sql2="DELETE FROM photo WHERE id = $idphoto AND utilisateur_id = $idutil;";
+}
 // récupérations des images de l'utilisateur connecté dans la table photo
 $sql = "SELECT * FROM photo
         WHERE utilisateur_id = ".$_SESSION['id']."
@@ -68,6 +77,7 @@ $recup_sql = mysqli_query($mysqli,$sql) or die(mysqli_error($mysqli));
         <meta charset="UTF-8">
         <title><?php echo $_SESSION['lelogin']?> - Votre Espace membre</title>
         <link rel="stylesheet" href="style.css" />
+        <script src="monjs.js"></script>
     </head>
     <body>
          <div id="content">
@@ -109,7 +119,7 @@ $recup_sql = mysqli_query($mysqli,$sql) or die(mysqli_error($mysqli));
                  echo "<h4>".$ligne['letitre']."</h4>";
                  echo "<a href='".CHEMIN_RACINE.$dossier_gd.$ligne['lenom'].".".$ligne['letype']."' target='_blank'><img src='".CHEMIN_RACINE.$dossier_mini.$ligne['lenom'].".".$ligne['letype']."' alt='' /></a>";
                  echo "<p>".$ligne['ladesc']."<br />
-                 <a href=''><img src='img/modifier.png' alt='modifier' /></a> <a href=''><img src='img/supprimer.png' alt='supprimer' /></a>
+                 <a href=''><img src='img/modifier.png' alt='modifier' /></a> <img onclick='supprime(".$ligne['id'].");' src='img/supprimer.png' alt='supprimer' />
                      </p>";
                  echo "</div>";
                }

@@ -13,3 +13,6 @@ INSERT INTO photo (lenom,letype,lepoids,lahauteur,lalargeur,letitre,ladesc,utili
 SELECT p.lenom,p.letype,p.letitre,p.ladesc, u.lelogin FROM photo p
     INNER JOIN utilisateur u ON u.id = p.utilisateur_id
     ORDER BY p.id DESC;
+
+/* Requête qui supprime une image si c'est son propriétaire qui effectue l'action*/
+DELETE FROM photo WHERE id = 1 AND utilisateur_id = 1;

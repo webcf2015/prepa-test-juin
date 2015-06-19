@@ -48,6 +48,7 @@ $recup_sql = mysqli_query($mysqli,$sql) or die(mysqli_error($mysqli));
         <meta charset="UTF-8">
         <title>Accueil</title>
         <link rel="stylesheet" href="style.css" />
+        <script src="monjs.js"></script>
     </head>
     <body>
         <div id="content">
