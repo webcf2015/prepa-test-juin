@@ -47,6 +47,8 @@ $recup_sql = mysqli_query($mysqli,$sql) or die(mysqli_error($mysqli));
     <head>
         <meta charset="UTF-8">
         <title>Accueil</title>
+        <link rel="stylesheet" href="style.css" />
+        <script src="monjs.js"></script>
     </head>
     <body>
         <div id="content">
@@ -94,7 +96,7 @@ $recup_sql = mysqli_query($mysqli,$sql) or die(mysqli_error($mysqli));
                 <?php
                 // affichez les miniatures de chaques photos dans la db par id Desc, avec le titre au dessus et la description en dessous, et affichage de la grande photo dans une nouvelle fenêtre lors du clic, Bonus : afficher lelogin de l'auteur de l'image
                while($ligne = mysqli_fetch_assoc($recup_sql)){
-                 echo "<div style='border:1px dotted black;margin: 5px;width: $mini_large px;display:inline-block;word-wrap:break-word;vertical-align:top;'>";
+                 echo "<div class='miniatures'>";
                  echo "<h4>".$ligne['letitre']."</h4>";
                  echo "<a href='".CHEMIN_RACINE.$dossier_gd.$ligne['lenom'].".".$ligne['letype']."' target='_blank'><img src='".CHEMIN_RACINE.$dossier_mini.$ligne['lenom'].".".$ligne['letype']."' alt='' /></a>";
                  echo "<p>".$ligne['ladesc']."<br /> par <strong>".$ligne['lelogin']."</strong></p>";
