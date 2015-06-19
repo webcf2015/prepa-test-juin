@@ -32,9 +32,24 @@ if(isset($_POST['letitre'])&&isset($_FILES['lefichier'])){
     }else{
         var_dump($upload);
         // création de la grande image qui garde les proportions
-        creation_img($dossier_ori, $upload['nom'],$upload['extension'],$dossier_gd,$grande_large,$grande_haute,$grande_qualite);
+        $gd_ok = creation_img($dossier_ori, $upload['nom'],$upload['extension'],$dossier_gd,$grande_large,$grande_haute,$grande_qualite);
+        
         // création de la miniature centrée et coupée
-        creation_img($dossier_ori, $upload['nom'],$upload['extension'],$dossier_mini,$mini_large,$mini_haute,$mini_qualite,false);
+        $min_ok = creation_img($dossier_ori, $upload['nom'],$upload['extension'],$dossier_mini,$mini_large,$mini_haute,$mini_qualite,false);
+        
+        // si la création des 2 images sont effectuées
+        if($gd_ok==true && $min_ok==true){
+            
+            // préparation de la requête (on utilise un tableau venant de la fonction upload_originales, de champs de formulaires POST traités et d'une variable de session comme valeurs d'entrée)
+            $sql= "INSERT INTO photo (lenom,letype,lepoids,lahauteur,lalargeur,letitre,ladesc,utilisateur_id) 
+	VALUES ('".$upload['nom']."','".$upload['extension']."',".$upload['poids'].",".$upload['hauteur'].",".$upload['largeur'].",'$letitre','$ladesc',".$_SESSION['id'].");";
+            
+            mysqli_query($mysqli,$sql) or die(mysqli_error($mysqli));
+            
+        }else{
+            echo 'Erreur lors de la création des images redimenssionnées';
+        }
+        
     }    
 }
 

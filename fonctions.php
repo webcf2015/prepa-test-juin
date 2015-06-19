@@ -34,8 +34,12 @@ function upload_originales($fichier,$destination,$ext){
     $nom_final = chaine_hasard(25);
     
     // on a besoin du nom final dans le tableau $sortie si la fonction réussit
+    $sortie['poids'] = filesize($fichier['tmp_name']);
+    $sortie['largeur'] = getimagesize($fichier['tmp_name'])[0];
+    $sortie['hauteur'] = getimagesize($fichier['tmp_name'])[1];
     $sortie['nom'] = $nom_final;
     $sortie['extension'] = $extension_origine;
+    
 
     // on déplace l'image du dossier temporaire vers le dossier 'originales'  avec le nom de fichier complet
     if(@move_uploaded_file($fichier['tmp_name'], $destination.$nom_final.".".$extension_origine)){
@@ -166,11 +170,7 @@ function creation_img($chemin_org, $nom,$extension,$destination,$largeur_max,$ha
     }else{
     
     
-/*
- * 
- * ON EST ICI
- * 
- */        
+       
       //$chemin_org, $nom,$extension,$destination,$largeur_max,$hauteur_max,$qualite, $proportion = true  
         
     // REFAIRE LE CALCUL
