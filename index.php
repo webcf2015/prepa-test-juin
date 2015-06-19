@@ -32,6 +32,15 @@ if (isset($_POST['lelogin'])) {
         header('location: ' . CHEMIN_RACINE);
     }
 }
+
+// récupérations des images dans la table photo
+$sql = "SELECT p.lenom,p.letype,p.letitre,p.ladesc, u.lelogin 
+    FROM photo p
+    INNER JOIN utilisateur u ON u.id = p.utilisateur_id
+    ORDER BY p.id DESC; 
+    ";
+$recup_sql = mysqli_query($mysqli,$sql) or die(mysqli_error($mysqli));        
+
 ?>
 <!DOCTYPE html>
 <html>
@@ -81,7 +90,18 @@ if (isset($_POST['lelogin'])) {
                     ?>
                 </div>
             </div>
-            <div id="milieu"></div>
+            <div id="milieu">
+                <?php
+                // affichez les miniatures de chaques photos dans la db par id Desc, avec le titre au dessus et la description en dessous, et affichage de la grande photo dans une nouvelle fenêtre lors du clic, Bonus : afficher lelogin de l'auteur de l'image
+               while($ligne = mysqli_fetch_assoc($recup_sql)){
+                 echo "<div style='border:1px dotted black;margin: 5px;width: $mini_large px;display:inline-block;word-wrap:break-word;vertical-align:top;'>";
+                 echo "<h4>".$ligne['letitre']."</h4>";
+                 echo "<a href='".CHEMIN_RACINE.$dossier_gd.$ligne['lenom'].".".$ligne['letype']."' target='_blank'><img src='".CHEMIN_RACINE.$dossier_mini.$ligne['lenom'].".".$ligne['letype']."' alt='' /></a>";
+                 echo "<p>".$ligne['ladesc']."<br /> par <strong>".$ligne['lelogin']."</strong></p>";
+                 echo "</div>";
+               }                
+               ?> 
+            </div>
             <div id="bas"></div>
         </div>
     </body>

@@ -30,7 +30,7 @@ if(isset($_POST['letitre'])&&isset($_FILES['lefichier'])){
         
     // si on a pas d'erreur, on va insérer dans la db et créer la miniature et grande image   
     }else{
-        var_dump($upload);
+        //var_dump($upload);
         // création de la grande image qui garde les proportions
         $gd_ok = creation_img($dossier_ori, $upload['nom'],$upload['extension'],$dossier_gd,$grande_large,$grande_haute,$grande_qualite);
         
@@ -52,6 +52,14 @@ if(isset($_POST['letitre'])&&isset($_FILES['lefichier'])){
         
     }    
 }
+
+
+// récupérations des images de l'utilisateur connecté dans la table photo
+$sql = "SELECT * FROM photo
+        WHERE utilisateur_id = ".$_SESSION['id']."
+        ORDER BY id DESC; 
+    ";
+$recup_sql = mysqli_query($mysqli,$sql) or die(mysqli_error($mysqli));
 
 ?>
 <!DOCTYPE html>
@@ -93,7 +101,19 @@ if(isset($_POST['letitre'])&&isset($_FILES['lefichier'])){
                     <input type="submit" value="Envoyer le fichier" /><br/>
                 </form>
             </div>
-                 <div id="lesphotos"></div>
+                 <div id="lesphotos">
+                     <?php
+                     while($ligne = mysqli_fetch_assoc($recup_sql)){
+                 echo "<div style='border:1px dotted black;margin: 5px;width: $mini_large px;display:inline-block;word-wrap:break-word;vertical-align:top;'>";
+                 echo "<h4>".$ligne['letitre']."</h4>";
+                 echo "<a href='".CHEMIN_RACINE.$dossier_gd.$ligne['lenom'].".".$ligne['letype']."' target='_blank'><img src='".CHEMIN_RACINE.$dossier_mini.$ligne['lenom'].".".$ligne['letype']."' alt='' /></a>";
+                 echo "<p>".$ligne['ladesc']."<br />
+                 <a href=''><img src='img/modifier.png' alt='modifier' /></a> <a href=''><img src='img/supprimer.png' alt='supprimer' /></a>
+                     </p>";
+                 echo "</div>";
+               }
+               ?>
+                 </div>
              </div>
             <div id="bas"></div>
          </div>
