@@ -16,3 +16,17 @@ SELECT p.lenom,p.letype,p.letitre,p.ladesc, u.lelogin FROM photo p
 
 /* Requête qui supprime une image si c'est son propriétaire qui effectue l'action*/
 DELETE FROM photo WHERE id = 1 AND utilisateur_id = 1;
+
+/* Récupération de toutes les sections*/
+SELECT * FROM rubrique ORDER BY lintitle ASC;
+
+/* récupération des photos avec leurs sections même si elles ne sont pas 
+dans une section lorsque l'id utilisateur est 1 */
+SELECT p.*, GROUP_CONCAT(r.id ORDER BY r.lintitle ASC) AS idrub, 
+			GROUP_CONCAT(r.lintitle ORDER BY r.lintitle ASC SEPARATOR '|||' ) AS lintitule
+		FROM photo p
+	LEFT JOIN photo_has_rubrique h ON h.photo_id = p.id
+    LEFT JOIN rubrique r ON h.rubrique_id = r.id
+        WHERE p.utilisateur_id = 1
+        GROUP BY p.id
+        ORDER BY p.id DESC
