@@ -34,9 +34,14 @@ if (isset($_POST['lelogin'])) {
 }
 
 // récupérations des images dans la table photo
-$sql = "SELECT p.lenom,p.letype,p.letitre,p.ladesc, u.lelogin 
+$sql = "SELECT p.lenom,p.letype,p.letitre,p.ladesc, u.lelogin, 
+    GROUP_CONCAT(r.id) AS rubid, 
+    GROUP_CONCAT(r.lintitle SEPARATOR '~~') AS lintitule 
     FROM photo p
     INNER JOIN utilisateur u ON u.id = p.utilisateur_id
+    LEFT JOIN photo_has_rubrique h ON h.photo_id = p.id
+    LEFT JOIN rubrique r ON h.rubrique_id = r.id
+    GROUP BY p.id
     ORDER BY p.id DESC; 
     ";
 $recup_sql = mysqli_query($mysqli,$sql) or die(mysqli_error($mysqli));        
@@ -98,7 +103,13 @@ $recup_sql = mysqli_query($mysqli,$sql) or die(mysqli_error($mysqli));
                while($ligne = mysqli_fetch_assoc($recup_sql)){
                  echo "<div class='miniatures'>";
                  echo "<h4>".$ligne['letitre']."</h4>";
-                 echo "<a href='".CHEMIN_RACINE.$dossier_gd.$ligne['lenom'].".".$ligne['letype']."' target='_blank'><img src='".CHEMIN_RACINE.$dossier_mini.$ligne['lenom'].".".$ligne['letype']."' alt='' /></a>";
+                 echo "<a href='".CHEMIN_RACINE.$dossier_gd.$ligne['lenom'].".jpg' target='_blank'><img src='".CHEMIN_RACINE.$dossier_mini.$ligne['lenom'].".jpg' alt='' /></a><br/>";
+                 $explose_rub = explode('~~',$ligne['lintitule']);
+                 $explose_id = explode(',',$ligne['rubid']);
+                 foreach($explose_rub AS $clef => $valeur){
+                     echo "<a href='?section=".$explose_id[$clef]."'>";
+                     echo $valeur."</a><br/>";
+                 }
                  echo "<p>".$ligne['ladesc']."<br /> par <strong>".$ligne['lelogin']."</strong></p>";
                  echo "</div>";
                }                
